@@ -1,0 +1,20 @@
+# Example HSV Settings for Yellow Obstacle Detection
+# Copy this file to hsv_settings.yaml and adjust values for your lighting
+
+Trackbars Yellow:
+  H_min: 20
+  S_min: 120
+  V_min: 120
+  H_max: 30
+  S_max: 255
+  V_max: 255
+
+# Notes:
+# - H (Hue): 0-179 in OpenCV (0=Red, 30=Yellow, 60=Green, 120=Blue)
+# - S (Saturation): 0-255 (0=White/Gray, 255=Pure color)
+# - V (Value): 0-255 (0=Black, 255=Bright)
+#
+# Calibration Tips:
+# 1. Start vision system with 'm' to show mask
+# 2. Adjust trackbars until only yellow obstacles are white in mask
+# 3. Settings auto-save when closing application

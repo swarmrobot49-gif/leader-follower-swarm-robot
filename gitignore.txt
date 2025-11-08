@@ -1,0 +1,129 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Vision System
+vision-system/hsv_settings.yaml
+vision-system/captures/
+vision-system/*.png
+vision-system/*.jpg
+
+# C# / .NET
+## Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio cache/options
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+## Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+## ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+## NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Arduino / ESP8266
+*.hex
+*.eep
+*.elf
+*.map
+*.bin
+
+# Runtime data files
+%LocalAppData%/RobotData/
+RobotData/
+leader_pose.txt
+follower_pose.txt
+leader_path.txt
+obstacles.txt
+pixels_per_grid.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+*.cache
+
+# Documentation build
+docs/_build/
+docs/.doctrees/
+
+# Test files
+test_results/
+*.test
+*.spec
+
+# Backup files
+*.old
+*.backup
+
+# OS specific
+Thumbs.db
+desktop.ini
+.Spotlight-V100
+.Trashes

@@ -1,0 +1,35 @@
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\bin\Debug\net8.0-windows\RobotArenaGUI.exe
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\bin\Debug\net8.0-windows\RobotArenaGUI.deps.json
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\bin\Debug\net8.0-windows\RobotArenaGUI.runtimeconfig.json
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\bin\Debug\net8.0-windows\RobotArenaGUI.dll
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\bin\Debug\net8.0-windows\RobotArenaGUI.pdb
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.MainForm.resources
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.csproj.GenerateResource.cache
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.AssemblyInfoInputs.cache
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.AssemblyInfo.cs
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.csproj.CoreCompileInputs.cache
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.dll
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\refint\RobotArenaGUI.dll
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.pdb
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.genruntimeconfig.cache
+C:\Users\Kevin Tobing\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\ref\RobotArenaGUI.dll
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\bin\Debug\net8.0-windows\RobotArenaGUI.exe
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\bin\Debug\net8.0-windows\RobotArenaGUI.deps.json
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\bin\Debug\net8.0-windows\RobotArenaGUI.runtimeconfig.json
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\bin\Debug\net8.0-windows\RobotArenaGUI.dll
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\bin\Debug\net8.0-windows\RobotArenaGUI.pdb
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.MainForm.resources
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.csproj.GenerateResource.cache
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.AssemblyInfoInputs.cache
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.AssemblyInfo.cs
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.csproj.CoreCompileInputs.cache
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.dll
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\refint\RobotArenaGUI.dll
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.pdb
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.genruntimeconfig.cache
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\ref\RobotArenaGUI.dll
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotArenaGUI.csproj.AssemblyReference.cache
+C:\Users\invoc\source\repos\RobotArenaGUI\RobotArenaGUI\obj\Debug\net8.0-windows\RobotAre.7499C582.Up2Date

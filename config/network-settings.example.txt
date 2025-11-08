@@ -1,0 +1,24 @@
+# Network Configuration Example
+# Copy and modify according to your network setup
+
+[WiFi]
+SSID = YourWiFiName
+Password = YourWiFiPassword
+
+[Leader Robot]
+IP_Address = 10.159.150.9
+TCP_Port = 5555
+
+[Follower Robot]
+IP_Address = 10.159.150.23
+TCP_Port = 6060
+
+[Vision System]
+# Vision system runs on the same machine as GUI
+Server_IP = localhost
+Server_Port = 6666
+
+# Notes:
+# - Ensure all devices are on the same network
+# - Use static IP for robots to avoid reconnection issues
+# - Check firewall allows TCP connections on these ports

@@ -1,0 +1,9 @@
+# Computer Vision
+opencv-contrib-python>=4.5.0
+numpy>=1.19.0
+
+# Configuration
+PyYAML>=5.4.0
+
+# Optional: For better performance
+# opencv-python-headless>=4.5.0  # Use this instead if running headless
