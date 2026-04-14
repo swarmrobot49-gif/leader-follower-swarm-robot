@@ -1,0 +1,596 @@
+// leader_reactive_pf.ino
+// Firmware Leader Robot untuk Pure Reactive Potential Field Control
+// Menerima command SETVEL (v, w) langsung dari PC Controller
+
+
+#include <Arduino.h>
+#include <ESP8266WiFi.h>
+
+// ============================================================
+// WIFI CONFIGURATION
+// ============================================================
+const char* ssid = "tobing10";           
+const char* password = "swarm123";     
+const int tcp_port = 5555;
+
+WiFiServer tcpServer(tcp_port);
+WiFiClient client;
+
+// ============================================================
+// PIN DEFINITIONS
+// ============================================================
+const int pwmA_pin = 5;   // Motor Kiri PWM
+const int dirA_pin = 0;   // Motor Kiri Direction
+const int pwmB_pin = 4;   // Motor Kanan PWM
+const int dirB_pin = 2;   // Motor Kanan Direction
+const int encA1 = 14;     // Encoder Kiri A
+const int encA2 = 12;     // Encoder Kiri B
+const int encB1 = 13;     // Encoder Kanan A
+const int encB2 = 10;     // Encoder Kanan B
+
+// ============================================================
+// ROBOT SPECIFICATIONS
+// ============================================================
+const float WHEEL_DIAMETER_CM = 4.0f;
+const float WHEEL_CIRCUMFERENCE_CM = PI * WHEEL_DIAMETER_CM;
+const int TICKS_PER_REVOLUTION = 2800;
+const float DISTANCE_PER_TICK_CM = WHEEL_CIRCUMFERENCE_CM / (float)TICKS_PER_REVOLUTION;
+const float WHEEL_BASE_CM = 10.0f;
+
+// Speed compensation (jika motor tidak simetris)
+const float SPEED_COMP_LEFT = 1.0f;
+const float SPEED_COMP_RIGHT = 1.1f;
+
+// ============================================================
+// VELOCITY COMMAND STATE
+// ============================================================
+volatile float targetLinearVel = 0.0f;   // cm/s
+volatile float targetAngularVel = 0.0f;  // rad/s
+volatile float targetSpeedL = 0.0f;      // cm/s wheel kiri
+volatile float targetSpeedR = 0.0f;      // cm/s wheel kanan
+
+// Command timeout (safety)
+const uint32_t CMD_TIMEOUT_MS = 600;     // Stop jika tidak ada command dalam 200ms
+volatile uint32_t lastCmdTime = 0;
+
+// Enable/disable control
+volatile bool controlEnabled = false;
+
+// ============================================================
+// ODOMETRY STATE
+// ============================================================
+volatile long odometryTicksA = 0;
+volatile long odometryTicksB = 0;
+volatile int lastStateA_enc = 0;
+volatile int lastStateB_enc = 0;
+
+float x_pos_cm = 0.0f;
+float y_pos_cm = 0.0f;
+float theta_rad = 0.0f;
+long lastOdoTicksA = 0;
+long lastOdoTicksB = 0;
+
+// ============================================================
+// PID CONTROL
+// ============================================================
+// PID gains untuk wheel speed control
+float Kp_L = 2.5f, Ki_L = 0.05f, Kd_L = 0.06f;
+float Kp_R = 2.6f, Ki_R = 0.055f, Kd_R = 0.065f;
+
+// PID state
+float integralL = 0, integralR = 0;
+float lastErrorL = 0, lastErrorR = 0;
+long lastTicksA_pid = 0, lastTicksB_pid = 0;
+
+const float INTEGRAL_MAX = 500.0f;  // Anti-windup
+
+// Timing
+const int PID_INTERVAL_MS = 20;     // 50 Hz PID loop
+unsigned long lastPidTime = 0;
+float dt = PID_INTERVAL_MS / 1000.0f;
+
+// ============================================================
+// TELEMETRY
+// ============================================================
+const uint32_t TELEMETRY_INTERVAL_MS = 50;  // 20 Hz
+uint32_t lastTelemetryTime = 0;
+bool telemetryEnabled = true;
+
+// ============================================================
+// TCP BUFFER
+// ============================================================
+String tcpBuffer = "";
+const int MAX_BUFFER_LEN = 128;
+
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
+inline float wrapPi(float a) {
+    while (a > PI) a -= 2.0f * PI;
+    while (a < -PI) a += 2.0f * PI;
+    return a;
+}
+
+inline float clampF(float v, float lo, float hi) {
+    return v < lo ? lo : (v > hi ? hi : v);
+}
+
+// ============================================================
+// ENCODER ISRs
+// ============================================================
+void IRAM_ATTR handleEncoderA() {
+    int MSB = digitalRead(encA1);
+    int LSB = digitalRead(encA2);
+    int encoded = (MSB << 1) | LSB;
+    int sum = (lastStateA_enc << 2) | encoded;
+    
+    if (sum == 0b1101 || sum == 0b0100 || sum == 0b0010 || sum == 0b1011) {
+        odometryTicksA++;
+    } else if (sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) {
+        odometryTicksA--;
+    }
+    lastStateA_enc = encoded;
+}
+
+void IRAM_ATTR handleEncoderB() {
+    int MSB = digitalRead(encB1);
+    int LSB = digitalRead(encB2);
+    int encoded = (MSB << 1) | LSB;
+    int sum = (lastStateB_enc << 2) | encoded;
+    
+    if (sum == 0b1101 || sum == 0b0100 || sum == 0b0010 || sum == 0b1011) {
+        odometryTicksB++;
+    } else if (sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) {
+        odometryTicksB--;
+    }
+    lastStateB_enc = encoded;
+}
+
+// ============================================================
+// MOTOR CONTROL
+// ============================================================
+void setMotor(int motorId, int pwmValue) {
+    int pwmPin, dirPin;
+    bool forward = pwmValue >= 0;
+    int pwmMag = constrain(abs(pwmValue), 0, 1023);
+    
+    if (motorId == 0) {  // Left
+        pwmPin = pwmA_pin;
+        dirPin = dirA_pin;
+    } else {              // Right
+        pwmPin = pwmB_pin;
+        dirPin = dirB_pin;
+    }
+    
+    digitalWrite(dirPin, forward ? HIGH : LOW);
+    analogWrite(pwmPin, pwmMag);
+}
+
+void stopMotors() {
+    analogWrite(pwmA_pin, 0);
+    analogWrite(pwmB_pin, 0);
+}
+
+// ============================================================
+// ODOMETRY UPDATE
+// ============================================================
+void updateOdometry() {
+    noInterrupts();
+    long ticksA = odometryTicksA;
+    long ticksB = odometryTicksB;
+    interrupts();
+    
+    long deltaA = ticksA - lastOdoTicksA;
+    long deltaB = ticksB - lastOdoTicksB;
+    lastOdoTicksA = ticksA;
+    lastOdoTicksB = ticksB;
+    
+    // Motor kiri terbalik
+    deltaA *= -1;
+    
+    float distL = deltaA * DISTANCE_PER_TICK_CM;
+    float distR = deltaB * DISTANCE_PER_TICK_CM;
+    
+    float deltaDistance = (distL + distR) / 2.0f;
+    float deltaTheta = (distR - distL) / WHEEL_BASE_CM;
+    
+    // Update pose
+    x_pos_cm += deltaDistance * cos(theta_rad + deltaTheta / 2.0f);
+    y_pos_cm += deltaDistance * sin(theta_rad + deltaTheta / 2.0f);
+    theta_rad = wrapPi(theta_rad + deltaTheta);
+}
+
+// ============================================================
+// VELOCITY TO WHEEL SPEEDS
+// ============================================================
+void velocityToWheels(float v, float w, volatile float &vL, volatile float &vR) {
+    // Differential drive kinematics
+    // v = (vL + vR) / 2
+    // w = (vR - vL) / L
+    // Solving:
+    // vL = v - w*L/2
+    // vR = v + w*L/2
+    
+    vL = v - (w * WHEEL_BASE_CM / 2.0f);
+    vR = v + (w * WHEEL_BASE_CM / 2.0f);
+}
+
+// ============================================================
+// PID WHEEL SPEED CONTROL
+// ============================================================
+void pidControl() {
+    unsigned long now = millis();
+    if (now - lastPidTime < PID_INTERVAL_MS) return;
+    
+    float actualDt = (now - lastPidTime) / 1000.0f;
+    lastPidTime = now;
+    
+    // Check command timeout
+    if (now - lastCmdTime > CMD_TIMEOUT_MS) {
+        targetLinearVel = 0;
+        targetAngularVel = 0;
+        targetSpeedL = 0;
+        targetSpeedR = 0;
+    }
+    
+    // Get current encoder values
+    noInterrupts();
+    long ticksA = odometryTicksA;
+    long ticksB = odometryTicksB;
+    interrupts();
+    
+    // Calculate actual wheel speeds
+    long deltaA = ticksA - lastTicksA_pid;
+    long deltaB = ticksB - lastTicksB_pid;
+    lastTicksA_pid = ticksA;
+    lastTicksB_pid = ticksB;
+    
+    deltaA *= -1;  // Motor kiri terbalik
+    
+    float actualSpeedL = (deltaA * DISTANCE_PER_TICK_CM) / actualDt;
+    float actualSpeedR = (deltaB * DISTANCE_PER_TICK_CM) / actualDt;
+    
+    // Get target wheel speeds
+    float setpointL = targetSpeedL * SPEED_COMP_LEFT;
+    float setpointR = targetSpeedR * SPEED_COMP_RIGHT;
+    
+    // ========== LEFT WHEEL PID ==========
+    float errorL = setpointL - actualSpeedL;
+    
+    // Reset integral jika setpoint = 0 dan sudah berhenti
+    if (abs(setpointL) < 0.1f && abs(actualSpeedL) < 0.5f) {
+        integralL = 0;
+        lastErrorL = 0;
+    } else {
+        integralL += errorL * actualDt;
+        integralL = clampF(integralL, -INTEGRAL_MAX, INTEGRAL_MAX);
+    }
+    
+    float derivativeL = (errorL - lastErrorL) / actualDt;
+    lastErrorL = errorL;
+    
+    float outputL = Kp_L * errorL + Ki_L * integralL + Kd_L * derivativeL;
+    
+    // ========== RIGHT WHEEL PID ==========
+    float errorR = setpointR - actualSpeedR;
+    
+    if (abs(setpointR) < 0.1f && abs(actualSpeedR) < 0.5f) {
+        integralR = 0;
+        lastErrorR = 0;
+    } else {
+        integralR += errorR * actualDt;
+        integralR = clampF(integralR, -INTEGRAL_MAX, INTEGRAL_MAX);
+    }
+    
+    float derivativeR = (errorR - lastErrorR) / actualDt;
+    lastErrorR = errorR;
+    
+    float outputR = Kp_R * errorR + Ki_R * integralR + Kd_R * derivativeR;
+    
+    // ========== OUTPUT TO MOTORS ==========
+    if (controlEnabled) {
+        // Convert to PWM (-1023 to 1023)
+        int pwmL = (int)clampF(outputL * 8.0f, -1023, 1023);  // Scale factor
+        int pwmR = (int)clampF(outputR * 8.0f, -1023, 1023);
+        
+        // Deadband compensation
+        const int PWM_DEADBAND = 35;
+
+        if (abs(setpointL) > 0.1f && abs(pwmL) < PWM_DEADBAND) {
+            pwmL = (setpointL > 0) ? PWM_DEADBAND : -PWM_DEADBAND;
+        }
+        if (abs(setpointR) > 0.1f && abs(pwmR) < PWM_DEADBAND) {
+            pwmR = (setpointR > 0) ? PWM_DEADBAND : -PWM_DEADBAND;
+        }
+        
+        setMotor(0, pwmL);
+        setMotor(1, pwmR);
+    } else {
+        stopMotors();
+    }
+}
+
+// ============================================================
+// TELEMETRY
+// ============================================================
+void sendTelemetry() {
+    if (!client || !client.connected() || !telemetryEnabled) return;
+    
+    unsigned long now = millis();
+    if (now - lastTelemetryTime < TELEMETRY_INTERVAL_MS) return;
+    lastTelemetryTime = now;
+    
+    // Format: TEL,time,x,y,theta,v,w,enabled
+    String msg = "TEL,";
+    msg += String(now) + ",";
+    msg += String(x_pos_cm, 2) + ",";
+    msg += String(y_pos_cm, 2) + ",";
+    msg += String(theta_rad, 4) + ",";
+    msg += String(targetLinearVel, 2) + ",";
+    msg += String(targetAngularVel, 3) + ",";
+    msg += String(controlEnabled ? 1 : 0);
+    
+    client.println(msg);
+}
+
+// ============================================================
+// COMMAND PARSING
+// ============================================================
+void parseCommand(String cmd) {
+    cmd.trim();
+    
+    // Debug echo
+    Serial.print("CMD: ");
+    Serial.println(cmd);
+    
+    String upperCmd = cmd;
+    upperCmd.toUpperCase();
+    
+    // ========== SETVEL v w ==========
+    // Main command untuk reactive PF control
+    if (upperCmd.startsWith("SETVEL ")) {
+        String params = cmd.substring(7);
+        int spaceIdx = params.indexOf(' ');
+        
+        if (spaceIdx > 0) {
+            float v = params.substring(0, spaceIdx).toFloat();
+            float w = params.substring(spaceIdx + 1).toFloat();
+            
+            // Store target velocity
+            targetLinearVel = v;
+            targetAngularVel = w;
+            
+            // Convert to wheel speeds
+            velocityToWheels(v, w, targetSpeedL, targetSpeedR);
+            
+            // Update command timestamp
+            lastCmdTime = millis();
+            
+            // Auto-enable control when receiving velocity
+            if (!controlEnabled && (abs(v) > 0.01f || abs(w) > 0.01f)) {
+                controlEnabled = true;
+            }
+        }
+    }
+    // ========== START ==========
+    else if (upperCmd == "START") {
+        controlEnabled = true;
+        lastCmdTime = millis();
+        if (client.connected()) client.println("OK: Control enabled");
+    }
+    // ========== STOP ==========
+    else if (upperCmd == "STOP") {
+        controlEnabled = false;
+        targetLinearVel = 0;
+        targetAngularVel = 0;
+        targetSpeedL = 0;
+        targetSpeedR = 0;
+        integralL = integralR = 0;
+        lastErrorL = lastErrorR = 0;
+        stopMotors();
+        if (client.connected()) client.println("OK: Control disabled");
+    }
+    // ========== SETPOS x,y,theta ==========
+    else if (upperCmd.startsWith("SETPOS ")) {
+        String params = cmd.substring(7);
+        int c1 = params.indexOf(',');
+        int c2 = params.indexOf(',', c1 + 1);
+        
+        if (c1 > 0 && c2 > c1) {
+            x_pos_cm = params.substring(0, c1).toFloat();
+            y_pos_cm = params.substring(c1 + 1, c2).toFloat();
+            theta_rad = params.substring(c2 + 1).toFloat();
+            
+            // Reset odometry reference
+            noInterrupts();
+            lastOdoTicksA = odometryTicksA;
+            lastOdoTicksB = odometryTicksB;
+            lastTicksA_pid = odometryTicksA;
+            lastTicksB_pid = odometryTicksB;
+            interrupts();
+            
+            // Reset PID
+            integralL = integralR = 0;
+            lastErrorL = lastErrorR = 0;
+            
+            if (client.connected()) {
+                String msg = "OK: Pose set to (" + String(x_pos_cm, 1) + "," + 
+                             String(y_pos_cm, 1) + "," + String(theta_rad, 3) + ")";
+                client.println(msg);
+            }
+        }
+    }
+    // ========== SETPID Kp Ki Kd ==========
+    else if (upperCmd.startsWith("SETPID ")) {
+        String params = cmd.substring(7);
+        int s1 = params.indexOf(' ');
+        int s2 = params.indexOf(' ', s1 + 1);
+        
+        if (s1 > 0 && s2 > s1) {
+            float kp = params.substring(0, s1).toFloat();
+            float ki = params.substring(s1 + 1, s2).toFloat();
+            float kd = params.substring(s2 + 1).toFloat();
+            
+            Kp_L = Kp_R = kp;
+            Ki_L = Ki_R = ki;
+            Kd_L = Kd_R = kd;
+            
+            integralL = integralR = 0;
+            lastErrorL = lastErrorR = 0;
+            
+            if (client.connected()) {
+                client.println("OK: PID set to " + String(kp, 2) + " " + 
+                               String(ki, 3) + " " + String(kd, 3));
+            }
+        }
+    }
+    // ========== GETPOSE ==========
+    else if (upperCmd == "GETPOSE") {
+        if (client.connected()) {
+            String msg = "POSE," + String(x_pos_cm, 2) + "," + 
+                         String(y_pos_cm, 2) + "," + String(theta_rad, 4);
+            client.println(msg);
+        }
+    }
+    // ========== PING ==========
+    else if (upperCmd == "PING") {
+        if (client.connected()) client.println("PONG");
+    }
+    // ========== TEL ON/OFF ==========
+    else if (upperCmd == "TEL ON" || upperCmd == "START_TEL") {
+        telemetryEnabled = true;
+        if (client.connected()) client.println("OK: Telemetry ON");
+    }
+    else if (upperCmd == "TEL OFF" || upperCmd == "STOP_TEL") {
+        telemetryEnabled = false;
+        if (client.connected()) client.println("OK: Telemetry OFF");
+    }
+    // ========== HELP ==========
+    else if (upperCmd == "HELP") {
+        if (client.connected()) {
+            client.println("\n=== REACTIVE PF LEADER COMMANDS ===");
+            client.println("SETVEL v w     - Set velocity (cm/s, rad/s)");
+            client.println("START          - Enable motor control");
+            client.println("STOP           - Disable motor control");
+            client.println("SETPOS x,y,th  - Set odometry pose");
+            client.println("SETPID Kp Ki Kd- Set PID gains");
+            client.println("GETPOSE        - Get current pose");
+            client.println("PING           - Connection test");
+            client.println("TEL ON/OFF     - Toggle telemetry");
+            client.println("HELP           - Show this help");
+            client.println("===================================\n");
+        }
+    }
+}
+
+// ============================================================
+// TCP HANDLING
+// ============================================================
+void handleTCP() {
+    // Accept new client
+    if (!client || !client.connected()) {
+        client = tcpServer.available();
+        if (client) {
+            Serial.println("Client connected");
+            client.println("LEADER REACTIVE PF READY");
+            tcpBuffer = "";
+        }
+        return;
+    }
+    
+    // Read data
+    while (client.available() > 0) {
+        char c = (char)client.read();
+        
+        if (c == '\n' || c == '\r') {
+            if (tcpBuffer.length() > 0) {
+                parseCommand(tcpBuffer);
+                tcpBuffer = "";
+            }
+        } else if (tcpBuffer.length() < MAX_BUFFER_LEN) {
+            tcpBuffer += c;
+        }
+    }
+}
+
+// ============================================================
+// SETUP
+// ============================================================
+void setup() {
+    Serial.begin(115200);
+    delay(100);
+    
+    Serial.println("\n========================================");
+    Serial.println("LEADER - REACTIVE POTENTIAL FIELD");
+    Serial.println("========================================");
+    
+    // Motor pins
+    pinMode(pwmA_pin, OUTPUT);
+    pinMode(dirA_pin, OUTPUT);
+    pinMode(pwmB_pin, OUTPUT);
+    pinMode(dirB_pin, OUTPUT);
+    stopMotors();
+    
+    // Encoder pins
+    pinMode(encA1, INPUT_PULLUP);
+    pinMode(encA2, INPUT_PULLUP);
+    pinMode(encB1, INPUT_PULLUP);
+    pinMode(encB2, INPUT_PULLUP);
+    
+    // Initialize encoder state
+    noInterrupts();
+    lastStateA_enc = (digitalRead(encA1) << 1) | digitalRead(encA2);
+    lastStateB_enc = (digitalRead(encB1) << 1) | digitalRead(encB2);
+    interrupts();
+    
+    // Attach interrupts
+    attachInterrupt(digitalPinToInterrupt(encA1), handleEncoderA, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(encA2), handleEncoderA, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(encB1), handleEncoderB, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(encB2), handleEncoderB, CHANGE);
+    
+    // WiFi
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, password);
+    Serial.print("Connecting to WiFi");
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+    Serial.println();
+    Serial.print("IP Address: ");
+    Serial.println(WiFi.localIP());
+    
+    // Start TCP server
+    tcpServer.begin();
+    Serial.print("TCP Server on port ");
+    Serial.println(tcp_port);
+    
+    lastPidTime = millis();
+    lastCmdTime = millis();
+    
+    Serial.println("Ready! Send HELP for commands.");
+}
+
+// ============================================================
+// MAIN LOOP
+// ============================================================
+void loop() {
+    yield();  // ESP8266 watchdog
+    
+    // Handle TCP communication
+    handleTCP();
+    
+    // Update odometry (continuous)
+    static unsigned long lastOdoUpdate = 0;
+    if (millis() - lastOdoUpdate >= 10) {  // 100 Hz
+        updateOdometry();
+        lastOdoUpdate = millis();
+    }
+    
+    // PID control loop
+    pidControl();
+    
+    // Telemetry
+    sendTelemetry();
+}
