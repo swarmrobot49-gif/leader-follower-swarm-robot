@@ -1,0 +1,133 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|c:\\users\\invoc\\onedrive\\documents\\for paper\\hybriddijkstrapotentialfield\\hybriddijkstrapotentialfield\\potentialfieldplanner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|solutionrelative:potentialfieldplanner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|c:\\users\\invoc\\onedrive\\documents\\for paper\\hybriddijkstrapotentialfield\\hybriddijkstrapotentialfield\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|solutionrelative:mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|solutionrelative:mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|c:\\users\\invoc\\onedrive\\documents\\for paper\\hybriddijkstrapotentialfield\\hybriddijkstrapotentialfield\\telemetrylogger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|solutionrelative:telemetrylogger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|c:\\users\\invoc\\onedrive\\documents\\for paper\\hybriddijkstrapotentialfield\\hybriddijkstrapotentialfield\\hybriddijkstrapotentialfield.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|solutionrelative:hybriddijkstrapotentialfield.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|c:\\users\\invoc\\onedrive\\documents\\for paper\\hybriddijkstrapotentialfield\\hybriddijkstrapotentialfield\\psopathplanner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|solutionrelative:psopathplanner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|c:\\users\\invoc\\onedrive\\documents\\for paper\\hybriddijkstrapotentialfield\\hybriddijkstrapotentialfield\\dijkstrapathfinder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DF6C2F66-785C-522A-D137-1FA8F640117E}|HybridDijkstraPotentialField.csproj|solutionrelative:dijkstrapathfinder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainForm.cs",
+              "DocumentMoniker": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\MainForm.cs",
+              "RelativeDocumentMoniker": "MainForm.cs",
+              "ToolTip": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\MainForm.cs",
+              "RelativeToolTip": "MainForm.cs",
+              "ViewState": "AgIAAMIIAAAAAAAAAAAYwMgIAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T17:15:07.364Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TelemetryLogger.cs",
+              "DocumentMoniker": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\TelemetryLogger.cs",
+              "RelativeDocumentMoniker": "TelemetryLogger.cs",
+              "ToolTip": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\TelemetryLogger.cs",
+              "RelativeToolTip": "TelemetryLogger.cs",
+              "ViewState": "AgIAANAAAAAAAAAAAAAAABYAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T17:13:55.503Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "PSOPathPlanner.cs",
+              "DocumentMoniker": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\PSOPathPlanner.cs",
+              "RelativeDocumentMoniker": "PSOPathPlanner.cs",
+              "ToolTip": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\PSOPathPlanner.cs",
+              "RelativeToolTip": "PSOPathPlanner.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAEQAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-14T13:44:10.005Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainForm.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\MainForm.cs",
+              "RelativeDocumentMoniker": "MainForm.cs",
+              "ToolTip": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\MainForm.cs [Design]",
+              "RelativeToolTip": "MainForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-12T15:46:11.7Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PotentialFieldPlanner.cs",
+              "DocumentMoniker": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\PotentialFieldPlanner.cs",
+              "RelativeDocumentMoniker": "PotentialFieldPlanner.cs",
+              "ToolTip": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\PotentialFieldPlanner.cs",
+              "RelativeToolTip": "PotentialFieldPlanner.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwA8AAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T09:52:38.415Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "HybridDijkstraPotentialField",
+              "DocumentMoniker": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField.csproj",
+              "RelativeDocumentMoniker": "HybridDijkstraPotentialField.csproj",
+              "ToolTip": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField.csproj",
+              "RelativeToolTip": "HybridDijkstraPotentialField.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-12-17T14:13:33.618Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DijkstraPathfinder.cs",
+              "DocumentMoniker": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\DijkstraPathfinder.cs",
+              "RelativeDocumentMoniker": "DijkstraPathfinder.cs",
+              "ToolTip": "C:\\Users\\invoc\\OneDrive\\Documents\\For Paper\\HybridDijkstraPotentialField\\HybridDijkstraPotentialField\\DijkstraPathfinder.cs",
+              "RelativeToolTip": "DijkstraPathfinder.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-14T13:53:06.202Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

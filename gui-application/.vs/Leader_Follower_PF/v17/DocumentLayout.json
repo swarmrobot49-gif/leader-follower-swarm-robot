@@ -1,0 +1,75 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\invoc\\source\\repos\\Leader_Follower_PF\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{36474082-06AE-4D84-B95F-C75CAC8E55F7}|Leader_Follower_PF\\Leader_Follower_PF.csproj|c:\\users\\invoc\\source\\repos\\leader_follower_pf\\leader_follower_pf\\followerreactivepfcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36474082-06AE-4D84-B95F-C75CAC8E55F7}|Leader_Follower_PF\\Leader_Follower_PF.csproj|solutionrelative:leader_follower_pf\\followerreactivepfcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36474082-06AE-4D84-B95F-C75CAC8E55F7}|Leader_Follower_PF\\Leader_Follower_PF.csproj|c:\\users\\invoc\\source\\repos\\leader_follower_pf\\leader_follower_pf\\reactivepotentialfieldcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36474082-06AE-4D84-B95F-C75CAC8E55F7}|Leader_Follower_PF\\Leader_Follower_PF.csproj|solutionrelative:leader_follower_pf\\reactivepotentialfieldcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36474082-06AE-4D84-B95F-C75CAC8E55F7}|Leader_Follower_PF\\Leader_Follower_PF.csproj|c:\\users\\invoc\\source\\repos\\leader_follower_pf\\leader_follower_pf\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36474082-06AE-4D84-B95F-C75CAC8E55F7}|Leader_Follower_PF\\Leader_Follower_PF.csproj|solutionrelative:leader_follower_pf\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainForm.cs",
+              "DocumentMoniker": "C:\\Users\\invoc\\source\\repos\\Leader_Follower_PF\\Leader_Follower_PF\\MainForm.cs",
+              "RelativeDocumentMoniker": "Leader_Follower_PF\\MainForm.cs",
+              "ToolTip": "C:\\Users\\invoc\\source\\repos\\Leader_Follower_PF\\Leader_Follower_PF\\MainForm.cs",
+              "RelativeToolTip": "Leader_Follower_PF\\MainForm.cs",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAgwKEAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T11:54:04.342Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ReactivePotentialFieldController.cs",
+              "DocumentMoniker": "C:\\Users\\invoc\\source\\repos\\Leader_Follower_PF\\Leader_Follower_PF\\ReactivePotentialFieldController.cs",
+              "RelativeDocumentMoniker": "Leader_Follower_PF\\ReactivePotentialFieldController.cs",
+              "ToolTip": "C:\\Users\\invoc\\source\\repos\\Leader_Follower_PF\\Leader_Follower_PF\\ReactivePotentialFieldController.cs",
+              "RelativeToolTip": "Leader_Follower_PF\\ReactivePotentialFieldController.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAA8wBkAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-29T15:41:15.817Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FollowerReactivePFController.cs",
+              "DocumentMoniker": "C:\\Users\\invoc\\source\\repos\\Leader_Follower_PF\\Leader_Follower_PF\\FollowerReactivePFController.cs",
+              "RelativeDocumentMoniker": "Leader_Follower_PF\\FollowerReactivePFController.cs",
+              "ToolTip": "C:\\Users\\invoc\\source\\repos\\Leader_Follower_PF\\Leader_Follower_PF\\FollowerReactivePFController.cs",
+              "RelativeToolTip": "Leader_Follower_PF\\FollowerReactivePFController.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAowDEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-05T16:32:40.079Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
