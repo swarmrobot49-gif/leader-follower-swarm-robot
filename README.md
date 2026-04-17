@@ -38,7 +38,7 @@ The system uses a three-layer architecture: an overhead vision layer for localiz
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│                    Vision Layer (Python)                  │
+│                    Vision Layer (Python)                 │
 │  Camera → ArUco Detection → Homography → Pose Files      │
 │  Yellow HSV → Obstacle Positions                         │
 │  Blue HSV  → Goal Position (goal_blue.txt)               │
@@ -99,9 +99,6 @@ where `s = 1 - d / d0` scales with proximity.
 
 The net force heading is low-pass filtered, then converted to differential drive commands `(v, ω)`. Linear velocity is reduced near obstacles with a √-curve slowdown, and a turn-in-place threshold prevents forward motion during large heading corrections.
 
-**Local minima escape sequence:**
-1. If net force magnitude stays below 5 N for 10 consecutive cycles (0.5 s), a random-walk perturbation is activated — the robot turns toward a goal-biased random direction for 3 seconds, then resumes normal PF.
-2. If the distance-to-goal stops decreasing for 30+ cycles, wall-following mode activates — the force vector is rotated 90° toward the goal side.
 
 ### Follower Navigation
 
@@ -111,15 +108,15 @@ anchor = leader_pos - follow_dist * (cos θ_leader, sin θ_leader)
 ```
 The anchor is low-pass filtered to prevent sudden jumps. The follower's attractive force targets the anchor; repulsive forces push away from static obstacles and the leader itself (collision prevention). A four-state machine (Idle → Catching → Following → Stopped) with hysteresis prevents oscillation.
 
-### Default Parameter Values
+### Parameter Values
 
 | Parameter | Leader | Follower |
 |---|---|---|
-| `k_att` | 5.0 | 4.0 |
-| `k_rep` | 1300 | 600 |
-| Obstacle influence range | 45 cm | 25 cm |
-| Max linear velocity | 10 cm/s | 12 cm/s |
-| Max angular velocity | 1.3 rad/s | 1.4 rad/s |
+| `k_att` | 7.0 | 7.0 |
+| `k_rep` | 1000 | 300 |
+| Obstacle influence range | 50 cm | 10 cm |
+| Max linear velocity | 8 cm/s | 10 cm/s |
+| Max angular velocity | 1.3 rad/s | 1.3 rad/s |
 | Follow / stop distance | — | 20 / 22 cm |
 | Control loop | 20 Hz | 20 Hz |
 
@@ -254,13 +251,13 @@ HSV ranges for yellow obstacles and blue goal are adjustable at runtime via trac
 ### Leader Reactive PF (`ReactivePotentialFieldController.cs`)
 
 ```csharp
-public float AttractiveGain          { get; set; } = 5.0f;
-public float RepulsiveGain           { get; set; } = 600.0f;
-public float ObstacleInfluenceRange  { get; set; } = 35.0f;   // cm
-public float VortexGain              { get; set; } = 0.7f;
-public float MaxLinearVelocity       { get; set; } = 10.0f;   // cm/s
+public float AttractiveGain          { get; set; } = 7.0f;
+public float RepulsiveGain           { get; set; } = 1000.0f;
+public float ObstacleInfluenceRange  { get; set; } = 50.0f;   // cm
+public float VortexGain              { get; set; } = 0.5f;
+public float MaxLinearVelocity       { get; set; } = 8.0f;   // cm/s
 public float MaxAngularVelocity      { get; set; } = 1.3f;    // rad/s
-public float GoalReachedThreshold    { get; set; } = 5.0f;    // cm
+public float GoalReachedThreshold    { get; set; } = 6.0f;    // cm
 public float EmergencyStopDistance   { get; set; } = 10.0f;   // cm
 public int   StuckCounterThreshold   { get; set; } = 30;
 ```
@@ -270,14 +267,14 @@ Attractive gain, repulsive gain, and obstacle range can also be adjusted live vi
 ### Follower Reactive PF (`FollowerReactivePFController.cs`)
 
 ```csharp
-public float FollowDistance          { get; set; } = 20.0f;   // cm
-public float StopDistance            { get; set; } = 22.0f;   // cm
-public float ResumeDistance          { get; set; } = 25.0f;   // cm
-public float AttractiveGain          { get; set; } = 4.0f;
-public float RepulsiveGain           { get; set; } = 600.0f;
-public float LeaderAvoidanceGain     { get; set; } = 800.0f;
-public float ObstacleInfluenceRange  { get; set; } = 25.0f;   // cm
-public float MaxLinearVelocity       { get; set; } = 12.0f;   // cm/s
+public float FollowDistance          { get; set; } = 25.0f;   // cm
+public float StopDistance            { get; set; } = 20.0f;   // cm
+public float ResumeDistance          { get; set; } = 30.0f;   // cm
+public float AttractiveGain          { get; set; } = 7.0f;
+public float RepulsiveGain           { get; set; } = 300.0f;
+public float LeaderAvoidanceGain     { get; set; } = 900.0f;
+public float ObstacleInfluenceRange  { get; set; } = 10.0f;   // cm
+public float MaxLinearVelocity       { get; set; } = 10.0f;   // cm/s
 ```
 
 ### Arena & GUI (`MainForm.cs`)
